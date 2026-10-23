@@ -3,7 +3,12 @@ import { markAsElement } from '../element-marker.js';
 import { parsePadding } from './utils/parse-padding.js';
 import { pxToPt } from './utils/px-to-pt.js';
 
-export type ButtonProps = Readonly<React.ComponentPropsWithoutRef<'a'>>;
+export type ButtonProps = Readonly<
+  React.ComponentPropsWithoutRef<'a'> & {
+    /** Stretches the button to the full width of its container. */
+    fullWidth?: boolean;
+  }
+>;
 
 const maxFontWidth = 5;
 
@@ -39,7 +44,7 @@ declare module 'react' {
 }
 
 export const Button = React.forwardRef<HTMLAnchorElement, ButtonProps>(
-  ({ children, style, target = '_blank', ...props }, ref) => {
+  ({ children, style, target = '_blank', fullWidth, ...props }, ref) => {
     const { paddingTop, paddingRight, paddingBottom, paddingLeft } =
       parsePadding(style ?? {});
 
@@ -63,6 +68,7 @@ export const Button = React.forwardRef<HTMLAnchorElement, ButtonProps>(
           display: 'inline-block',
           maxWidth: '100%',
           msoPaddingAlt: '0px',
+          ...(fullWidth ? { display: 'block', width: '100%' } : {}),
           ...style,
           paddingTop,
           paddingRight,
