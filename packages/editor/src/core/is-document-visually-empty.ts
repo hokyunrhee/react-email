@@ -46,5 +46,9 @@ function hasOnlyEmptyParagraph(node: Node): boolean {
 }
 
 function isEmptyParagraph(node: Node): boolean {
-  return node.type.name === 'paragraph' && node.content.size === 0;
+  // A paragraph holding only whitespace renders as blank too.
+  return (
+    node.type.name === 'paragraph' &&
+    (node.content.size === 0 || node.textContent.trim() === '')
+  );
 }
