@@ -3,7 +3,6 @@ import { pretty, toPlainText, unstableToPlainText } from '../node';
 import { createErrorBoundary } from '../shared/error-boundary';
 import type { Options } from '../shared/options';
 import { readStream } from '../shared/read-stream.browser';
-import { stripImagePreloadLinks } from '../shared/utils/strip-image-preload-links';
 
 export const render = async (node: React.ReactNode, options?: Options) => {
   const reactDOMServer = await import('react-dom/server').then((m) => {
@@ -31,7 +30,7 @@ export const render = async (node: React.ReactNode, options?: Options) => {
         await stream.allReady;
         return readStream(stream);
       })
-      .then((result) => resolve(stripImagePreloadLinks(result)))
+      .then(resolve)
       .catch(reject);
   });
 
