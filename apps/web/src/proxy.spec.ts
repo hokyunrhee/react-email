@@ -54,6 +54,22 @@ describe('proxy', () => {
     expect(await response.text()).toBe('# React Email');
   });
 
+  it('negotiates markdown for the legacy text/x-markdown type', async () => {
+    const fetchMock = vi.fn().mockResolvedValue(upstream('# React Email'));
+    global.fetch = fetchMock;
+
+    const response = await proxy(
+      new NextRequest('https://react.email/', {
+        headers: { accept: 'text/x-markdown' },
+      }),
+    );
+
+    expect(String(fetchMock.mock.calls[0][0])).toBe(
+      'https://react.email/llms.txt',
+    );
+    expect(response.headers.get('vary')).toBe('Accept');
+  });
+
   it('serves negotiated component pages as markdown with Vary: Accept', async () => {
     const fetchMock = vi.fn().mockResolvedValue(upstream('# Headers'));
     global.fetch = fetchMock;

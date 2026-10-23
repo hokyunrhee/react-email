@@ -2,6 +2,10 @@ import { type NextRequest, NextResponse } from 'next/server';
 
 const MARKDOWN_TYPE = 'text/markdown; charset=utf-8';
 
+// Some agents still send the pre-RFC 7763 `text/x-markdown`.
+const acceptsMarkdown = (accept: string): boolean =>
+  /\btext\/(x-)?markdown\b/.test(accept);
+
 const markdownPathFor = (pathname: string): string | null => {
   if (pathname === '/') {
     return '/llms.txt';
@@ -24,7 +28,7 @@ export const proxy = async (request: NextRequest) => {
   const endsWithMd = pathname.endsWith('.md');
   const accept = (request.headers.get('accept') ?? '').toLowerCase();
 
-  if (!endsWithMd && !accept.includes('text/markdown')) {
+  if (!endsWithMd && !acceptsMarkdown(accept)) {
     return NextResponse.next();
   }
 
