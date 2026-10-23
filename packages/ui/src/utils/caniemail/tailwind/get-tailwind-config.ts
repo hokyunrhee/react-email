@@ -7,7 +7,6 @@ import type { RawSourceMap } from 'source-map-js';
 import type { AST } from '../../../actions/email-validation/check-compatibility';
 import { convertStackWithSourceMap } from '../../convert-stack-with-sourcemap';
 import { inlineCssLoader } from '../../esbuild/inline-css-loader';
-import { getUserEsbuildPlugins } from '../../esbuild/load-esbuild-plugins';
 import { isErr } from '../../result';
 import { runBundledCode } from '../../run-bundled-code';
 
@@ -80,9 +79,7 @@ export { reactEmailTailwindConfigInternal };`,
       loader: 'tsx',
       resolveDir: configDirpath,
     },
-    // The template is bundled whole, so its imports need the same
-    // `--esbuild-plugins` that rendering applies.
-    plugins: [inlineCssLoader(), ...(await getUserEsbuildPlugins())],
+    plugins: [inlineCssLoader()],
     platform: 'node',
     sourcemap: 'external',
     jsx: 'automatic',
@@ -301,7 +298,7 @@ export { reactEmailTailwindThemeInternal, reactEmailTailwindUtilityInternal };`,
       loader: 'tsx',
       resolveDir: dirpath,
     },
-    plugins: [inlineCssLoader(), ...(await getUserEsbuildPlugins())],
+    plugins: [inlineCssLoader()],
     platform: 'node',
     sourcemap: 'external',
     jsx: 'automatic',
