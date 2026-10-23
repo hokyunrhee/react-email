@@ -42,6 +42,9 @@ jobs:
       - uses: actions/setup-node@v5
         with:
           node-version: 22
+          # No install cache. The default (cache when package.json#packageManager is set)
+          # needs pnpm before the corepack step below provides it.
+          package-manager-cache: false
       - run: corepack enable # pnpm at the version pinned in package.json#packageManager
       - run: pnpm install --frozen-lockfile
       - name: Build what this root's tests import
