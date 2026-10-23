@@ -51,8 +51,12 @@ const writeAll = (data: AllWorkspaces): void => {
       return;
     }
     window.localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
-  } catch {
-    // Swallow quota / serialization errors — persistence is best-effort.
+  } catch (error) {
+    // Out of quota: drop the stored blob so later writes can start fresh.
+    // Other errors (serialization) are swallowed — persistence is best-effort.
+    if (error instanceof DOMException && error.name === 'QuotaExceededError') {
+      window.localStorage.removeItem(STORAGE_KEY);
+    }
   }
 };
 

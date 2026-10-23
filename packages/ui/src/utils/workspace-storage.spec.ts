@@ -1,4 +1,4 @@
-import { beforeEach, describe, expect, it } from 'vitest';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 import {
   REACT_EMAIL_DATA_STORAGE_KEY,
   readWorkspaceValue,
@@ -16,6 +16,18 @@ const readBlob = () =>
 describe('workspace-storage', () => {
   beforeEach(() => {
     window.localStorage.clear();
+  });
+
+  it('does not throw when the storage quota is exceeded', () => {
+    const setItem = vi
+      .spyOn(Storage.prototype, 'setItem')
+      .mockImplementation(() => {
+        throw new DOMException('full', 'QuotaExceededError');
+      });
+    expect(() =>
+      writeWorkspaceValue(WORKSPACE_A, 'recipient', 'a@example.com'),
+    ).not.toThrow();
+    setItem.mockRestore();
   });
 
   it('returns undefined when nothing is stored', () => {
