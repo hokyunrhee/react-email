@@ -19,6 +19,13 @@ describe('<Img> component', () => {
     expect(html).toContain('data-testid="img-test"');
   });
 
+  it('keeps the aspect ratio when only the width is given', async () => {
+    const actualOutput = await render(
+      <Img alt="Cat" src="cat.jpg" width="300" />,
+    );
+    expect(actualOutput).toMatchInlineSnapshot(`"<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><!--$--><img alt="Cat" src="cat.jpg" style="display:block;outline:none;border:none;text-decoration:none;height:auto" width="300"/><!--/$-->"`);
+  });
+
   it('renders correctly', async () => {
     const actualOutput = await render(
       <Img alt="Cat" height="300" src="cat.jpg" width="300" />,

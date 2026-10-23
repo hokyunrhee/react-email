@@ -16,6 +16,10 @@ export const Img = React.forwardRef<HTMLImageElement, ImgProps>(
         outline: 'none',
         border: 'none',
         textDecoration: 'none',
+        // Keep the aspect ratio when only the width is given.
+        ...(width !== undefined && height === undefined
+          ? { height: 'auto' }
+          : {}),
         ...style,
       }}
       width={width}
