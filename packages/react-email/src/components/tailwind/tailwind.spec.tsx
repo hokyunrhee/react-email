@@ -204,7 +204,7 @@ describe('Tailwind component', () => {
       </Html>,
     );
     expect(actualOutput).toMatchInlineSnapshot(
-      `"<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html dir="ltr" lang="en"><head></head><body><!--$--><!--html--><!--body--><p style="font-size:14px;color:rgb(0,0,0);line-height:24px">or copy and paste this URL into your browser:<!-- --> <a class="other" href="https://react.email" style="color:rgb(21,93,252);text-decoration-line:none" target="_blank">https://react.email</a></p><p style="font-size:14px;color:rgb(0,0,0);line-height:24px">or copy and paste this URL into your browser:<!-- --> <a href="https://react.email" style="color:rgb(21,93,252);text-decoration-line:none" target="_blank">https://react.email</a></p><!--/$--></body></html>"`,
+      `"<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html dir="ltr" lang="en"><head></head><body><!--$--><!--html--><!--body--><p style="font-size:14px;color:rgb(0,0,0);line-height:24px">or copy and paste this URL into your browser:<!-- --> <a class="other" href="https://react.email" rel="noopener noreferrer" style="color:rgb(21,93,252);text-decoration-line:none" target="_blank">https://react.email</a></p><p style="font-size:14px;color:rgb(0,0,0);line-height:24px">or copy and paste this URL into your browser:<!-- --> <a href="https://react.email" rel="noopener noreferrer" style="color:rgb(21,93,252);text-decoration-line:none" target="_blank">https://react.email</a></p><!--/$--></body></html>"`,
     );
   });
 
