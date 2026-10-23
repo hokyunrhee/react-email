@@ -1,0 +1,55 @@
+name: nyorori
+on: pull_request
+
+permissions:
+  contents: read
+
+concurrency:
+  group: nyorori-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  roots:
+    name: roots
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.map.outputs.matrix }}
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+      - id: map
+        # Maps the changed files to the Vitest roots nyorori runs in; see the script's header.
+        run: bash .github/nyorori-roots.sh "${{ github.event.pull_request.base.sha }}" HEAD >> "$GITHUB_OUTPUT"
+
+  mutation:
+    name: nyorori ${{ matrix.root }}
+    needs: roots
+    if: needs.roots.outputs.matrix != '[]'
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    strategy:
+      fail-fast: false
+      matrix:
+        include: ${{ fromJSON(needs.roots.outputs.matrix) }}
+    env:
+      # apps/docs pulls in puppeteer (through mintlify); its browser download is not needed.
+      PUPPETEER_SKIP_DOWNLOAD: '1'
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0 # nyorori needs the merge-base with the base commit
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+      - run: corepack enable # pnpm at the version pinned in package.json#packageManager
+      - run: pnpm install --frozen-lockfile
+      - name: Build what this root's tests import
+        if: matrix.build != ''
+        run: ${{ matrix.build }}
+      - uses: addmargins/nyorori@f5d6290e3af3ab69241e759926b191c11af5d3c0
+        env:
+          NODE_OPTIONS: ${{ matrix.node_options }}
+        with:
+          working-directory: ${{ matrix.root }}
+          exclude: ${{ matrix.exclude }}
