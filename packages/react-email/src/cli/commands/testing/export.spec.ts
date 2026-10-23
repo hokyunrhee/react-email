@@ -95,6 +95,7 @@ test('email export', { retry: 3 }, async () => {
                           style="font-size:14px;line-height:24px;color:rgb(0,0,0);margin-top:16px;margin-bottom:16px">
                           <strong></strong> (<a
                             href="mailto:undefined"
+                            rel="noopener noreferrer"
                             style="color:rgb(21,93,252);text-decoration-line:none"
                             target="_blank"></a
                           >) has invited you to the <strong></strong> team on<!-- -->
@@ -185,6 +186,7 @@ test('email export', { retry: 3 }, async () => {
                           style="font-size:14px;line-height:24px;color:rgb(0,0,0);margin-top:16px;margin-bottom:16px">
                           or copy and paste this URL into your browser:<!-- -->
                           <a
+                            rel="noopener noreferrer"
                             style="color:rgb(21,93,252);text-decoration-line:none"
                             target="_blank"></a>
                         </p>
