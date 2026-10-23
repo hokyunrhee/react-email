@@ -6,7 +6,7 @@ export default [
       build.onLoad({ filter: /\.custom$/ }, async (args) => {
         const { readFile } = await import('node:fs/promises');
         return {
-          contents: await readFile(args.path, 'utf8'),
+          contents: (await readFile(args.path, 'utf8')).trimEnd(),
           loader: 'text',
         };
       });
