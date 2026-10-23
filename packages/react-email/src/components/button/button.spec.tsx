@@ -2,6 +2,15 @@ import { render } from '@react-email/render';
 import { Button } from './index.js';
 
 describe('<Button> component', () => {
+  it('renders a full-width button', () => {
+    const html = render(
+      <Button fullWidth href="https://example.com">
+        Join
+      </Button>,
+    );
+    expect(html).toBeTruthy();
+  });
+
   it('renders children correctly', async () => {
     const testMessage = 'Test message';
     const html = await render(<Button>{testMessage}</Button>);
