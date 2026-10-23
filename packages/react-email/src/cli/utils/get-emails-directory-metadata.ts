@@ -106,6 +106,9 @@ export const getEmailsDirectoryMetadata = async (
         (dirent) =>
           dirent.isDirectory() &&
           !dirent.name.startsWith('_') &&
+          // Dot-directories (.git, .turbo) and installed packages hold no emails.
+          !dirent.name.startsWith('.') &&
+          dirent.name !== 'node_modules' &&
           dirent.name !== 'static',
       )
       .map((dirent) => {
